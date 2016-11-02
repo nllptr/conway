@@ -54,4 +54,16 @@ var neighborsTestCases = []struct {
 		2,
 		3,
 	},
+	{
+		World{
+			{false, false, false, false, false},
+			{false, true, false, true, false},
+			{false, false, true, false, false},
+			{false, true, false, true, false},
+			{false, false, false, false, false},
+		},
+		2,
+		2,
+		4,
+	},
 }
