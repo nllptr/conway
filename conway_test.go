@@ -22,10 +22,10 @@ func TestNew(t *testing.T) {
 }
 
 func TestNeighbors(t *testing.T) {
-	for _, c := range neighborsTestCases {
+	for i, c := range neighborsTestCases {
 		got := neighbors(c.w, c.x, c.y)
 		if got != c.want {
-			t.Fatalf("Number of neighbors is incorrect. Got %d, wanted %d", got, c.want)
+			t.Fatalf("Case %d: Number of neighbors is incorrect. Got %d, wanted %d", i+1, got, c.want)
 		}
 	}
 }
