@@ -39,3 +39,8 @@ func neighbors(w World, x, y int) int {
 	}
 	return n
 }
+
+// Next takes a world from one generation to the next.
+func Next(w World) World {
+	return New(1, 1)
+}

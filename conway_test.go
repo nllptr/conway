@@ -29,3 +29,22 @@ func TestNeighbors(t *testing.T) {
 		}
 	}
 }
+
+func TestNext(t *testing.T) {
+	for i, c := range nextTestCases {
+		got := Next(c.world)
+		if len(got) != len(c.want) {
+			t.Fatalf("Case %d: Number of rows do not match. Got %d, want %d", i+1, len(got), len(c.want))
+		}
+		if len(got[0]) != len(c.want[0]) {
+			t.Fatalf("Case %d: Number of cols do not match. Got %d, want %d", i+1, len(got[0]), len(c.want))
+		}
+		for x, row := range got {
+			for y, col := range row {
+				if col != c.want[x][y] {
+					t.Fatalf("Case %d: Next world looks weird.\n\nGot:\n%v\n\nWanted:\n%v", i+1, got, c.want)
+				}
+			}
+		}
+	}
+}
