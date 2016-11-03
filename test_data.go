@@ -6,7 +6,7 @@ var newTestCases = []struct {
 }{
 	{1, 1, World{{0}}},
 	{2, 2, World{{0, 0}, {0, 0}}},
-	{3, 2, World{{0, 0}, {0, 0}, {0, 0}}},
+	{3, 2, World{{0, 0, 0}, {0, 0, 0}}},
 	{0, 0, World{{0}}},
 }
 
@@ -41,8 +41,8 @@ var neighborsTestCases = []struct {
 			{0, 0, 0},
 			{1, 0, 0},
 		},
-		1,
 		0,
+		1,
 		2,
 	},
 	{
