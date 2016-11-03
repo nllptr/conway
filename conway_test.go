@@ -4,7 +4,10 @@ import "testing"
 
 func TestNew(t *testing.T) {
 	for _, c := range newTestCases {
-		got := New(c.x, c.y)
+		got, err := New(c.x, c.y)
+		if err != nil && (c.x == 0 || c.y == 0) {
+			t.Skip()
+		}
 		if len(got) != c.x {
 			t.Fatalf("Number of rows do not match. Got %d, want %d", len(got), c.x)
 		}

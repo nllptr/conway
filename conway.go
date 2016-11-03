@@ -1,15 +1,23 @@
 package conway
 
+import (
+	"errors"
+	"log"
+)
+
 // World represents a Game of Life game grid.
 type World [][]uint8
 
 // New creates a new World.
-func New(x, y int) World {
+func New(x, y int) (World, error) {
+	if x == 0 || y == 0 {
+		return nil, errors.New("x and y must be greater than 0")
+	}
 	world := make(World, x)
 	for i := range world {
 		world[i] = make([]uint8, y)
 	}
-	return world
+	return world, nil
 }
 
 func neighbors(w World, x, y int) int {
@@ -42,5 +50,27 @@ func neighbors(w World, x, y int) int {
 
 // Next takes a world from one generation to the next.
 func Next(w World) World {
-	return New(1, 1)
+	next, err := New(len(w), len(w[0]))
+	if err != nil {
+		log.Fatalf("Could not create new world")
+	}
+	for x, row := range w {
+		for y, col := range row {
+			n := neighbors(w, x, y)
+			if col == 0 && n == 3 {
+				next[x][y] = 1
+			} else {
+				switch {
+				case n < 2:
+					next[x][y] = 0
+				case n == 2 || n == 3:
+					next[x][y] = col
+				case n > 3:
+					next[x][y] = 0
+				}
+			}
+
+		}
+	}
+	return next
 }
