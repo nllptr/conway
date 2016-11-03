@@ -1,13 +1,13 @@
 package conway
 
 // World represents a Game of Life game grid.
-type World [][]bool
+type World [][]uint8
 
 // New creates a new World.
 func New(x, y int) World {
 	world := make(World, x)
 	for i := range world {
-		world[i] = make([]bool, y)
+		world[i] = make([]uint8, y)
 	}
 	return world
 }
@@ -32,7 +32,7 @@ func neighbors(w World, x, y int) int {
 	n := 0
 	for i := loRow; i <= hiRow; i++ {
 		for j := loCol; j <= hiCol; j++ {
-			if !(i == x && j == y) && w[i][j] {
+			if !(i == x && j == y) && w[i][j] > 0 {
 				n++
 			}
 		}

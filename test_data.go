@@ -4,9 +4,9 @@ var newTestCases = []struct {
 	x, y int
 	want World
 }{
-	{1, 1, World{{false}}},
-	{2, 2, World{{false, false}, {false, false}}},
-	{3, 2, World{{false, false}, {false, false}, {false, false}}},
+	{1, 1, World{{0}}},
+	{2, 2, World{{0, 0}, {0, 0}}},
+	{3, 2, World{{0, 0}, {0, 0}, {0, 0}}},
 }
 
 var neighborsTestCases = []struct {
@@ -16,9 +16,9 @@ var neighborsTestCases = []struct {
 }{
 	{
 		World{
-			{false, false, false},
-			{false, true, false},
-			{false, false, false},
+			{0, 0, 0},
+			{0, 1, 0},
+			{0, 0, 0},
 		},
 		1,
 		1,
@@ -26,9 +26,9 @@ var neighborsTestCases = []struct {
 	},
 	{
 		World{
-			{false, true, false},
-			{false, true, false},
-			{false, true, false},
+			{0, 1, 0},
+			{0, 1, 0},
+			{0, 1, 0},
 		},
 		1,
 		1,
@@ -36,9 +36,9 @@ var neighborsTestCases = []struct {
 	},
 	{
 		World{
-			{true, false, false},
-			{false, false, false},
-			{true, false, false},
+			{1, 0, 0},
+			{0, 0, 0},
+			{1, 0, 0},
 		},
 		1,
 		0,
@@ -46,9 +46,9 @@ var neighborsTestCases = []struct {
 	},
 	{
 		World{
-			{false, false, false},
-			{false, true, true},
-			{false, true, false},
+			{0, 0, 0},
+			{0, 1, 1},
+			{0, 1, 0},
 		},
 		2,
 		2,
@@ -56,11 +56,11 @@ var neighborsTestCases = []struct {
 	},
 	{
 		World{
-			{false, false, false, false, false},
-			{false, true, false, true, false},
-			{false, false, true, false, false},
-			{false, true, false, true, false},
-			{false, false, false, false, false},
+			{0, 0, 0, 0, 0},
+			{0, 1, 0, 1, 0},
+			{0, 0, 1, 0, 0},
+			{0, 1, 0, 1, 1},
+			{0, 0, 0, 0, 0},
 		},
 		2,
 		2,
