@@ -2,7 +2,12 @@ package conway
 
 import (
 	"fmt"
+	"image"
+	"image/color"
+	"image/draw"
+	"image/gif"
 	"log"
+	"os"
 )
 
 // World represents a Game of Life game grid.
@@ -73,4 +78,70 @@ func Next(w World) World {
 		}
 	}
 	return next
+}
+
+// Img generates a gray scale image from the supplied world and pixel size.
+func Img(w World, pix int) *image.Paletted {
+	r := image.Rect(0, 0, len(w[0])*pix, len(w)*pix)
+	palette := []color.Color{
+		color.White,
+		color.Black,
+	}
+	img := image.NewPaletted(r, palette)
+
+	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
+	for y, row := range w {
+		for x, col := range row {
+			if col > 0 {
+				pixel := image.Rect(x*pix, y*pix, x*pix+pix, y*pix+pix)
+				draw.Draw(img, pixel, &image.Uniform{color.Black}, image.ZP, draw.Src)
+			}
+		}
+	}
+	return img
+}
+
+// WriteGif writes an image to disk.
+func WriteGif(img *image.Paletted, fileName string) error {
+	out, err := os.Create(fileName)
+	if err != nil {
+		return fmt.Errorf("Could not open or create file '%v'", fileName)
+	}
+	var opts gif.Options
+	opts.NumColors = 256
+	err = gif.Encode(out, img, &opts)
+	if err != nil {
+		return fmt.Errorf("Could not encode GIF")
+	}
+	return nil
+}
+
+// Anim returns a new animated GIF
+func Anim(w World, pix int, steps int, delay int) *gif.GIF {
+	var images []*image.Paletted
+	var delays []int
+	for step := 0; step < steps; step++ {
+		img := Img(w, pix)
+		images = append(images, img)
+		delays = append(delays, delay)
+
+		w = Next(w)
+	}
+	return &gif.GIF{
+		Image: images,
+		Delay: delays,
+	}
+}
+
+// WriteAnimatedGif writes an animated GIF to disk.
+func WriteAnimatedGif(img *gif.GIF, fileName string) error {
+	out, err := os.Create(fileName)
+	if err != nil {
+		return fmt.Errorf("Could not open or create file '%v'", fileName)
+	}
+	err = gif.EncodeAll(out, img)
+	if err != nil {
+		return fmt.Errorf("Could not encode animated GIF")
+	}
+	return nil
 }
