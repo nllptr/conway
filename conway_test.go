@@ -53,7 +53,7 @@ func TestNext(t *testing.T) {
 }
 
 func TestImg(t *testing.T) {
-	w1 := World{
+	w := World{
 		{0, 0, 0, 0, 0},
 		{0, 0, 1, 0, 0},
 		{0, 0, 1, 0, 0},
@@ -61,16 +61,17 @@ func TestImg(t *testing.T) {
 		{0, 0, 0, 0, 0},
 	}
 
-	img := Img(w1, 10)
-	WriteGif(img, "mytestgif.gif")
+	c := Config{
+		PixelSize: 25,
+	}
+	WriteGif(w, c, "mytestgif.gif")
 
-	w1 = Next(w1)
-	img = Img(w1, 10)
-	WriteGif(img, "nexted.gif")
+	w = Next(w)
+	WriteGif(w, c, "nexted.gif")
 }
 
-func TestAnimatedImg(t *testing.T) {
-	w1 := World{
+func TestAnim(t *testing.T) {
+	w := World{
 		{0, 1, 0, 0, 0},
 		{0, 0, 1, 0, 0},
 		{1, 1, 1, 0, 0},
@@ -78,6 +79,8 @@ func TestAnimatedImg(t *testing.T) {
 		{0, 0, 0, 0, 0},
 	}
 
-	gif := Anim(w1, 10, 20, 50)
-	WriteAnimatedGif(gif, "animated.gif")
+	c := Config{
+		Delay: 20,
+	}
+	WriteAnimatedGif(w, c, "animated.gif")
 }

@@ -13,7 +13,17 @@ import (
 // World represents a Game of Life game grid.
 type World [][]uint8
 
-// New creates a new World.
+// Config is used to pass information into the write functions.
+// PixelSize is used to scale up the actual pixels to produce a more visible Game of Life.
+// Steps is the number of generations of the world that will be generated in an animated GIF.
+// Delay describes how long each frame will be displayed in an animated gif.
+type Config struct {
+	PixelSize int // Defaults to 10
+	Steps     int // Defaults to 20
+	Delay     int // 100ths of a second. Defaults to 50
+}
+
+// New creates a new World. The world will have x columns and y rows.
 func New(x, y int) (World, error) {
 	if x == 0 || y == 0 {
 		return nil, fmt.Errorf("x and y must be greater than 0 (x=%d, y=%d)", x, y)
@@ -53,7 +63,7 @@ func neighbors(w World, x, y int) int {
 	return n
 }
 
-// Next takes a world from one generation to the next.
+// Next returns the next generation of a world.
 func Next(w World) World {
 	next, err := New(len(w[0]), len(w))
 	if err != nil {
@@ -80,8 +90,11 @@ func Next(w World) World {
 	return next
 }
 
-// Img generates a gray scale image from the supplied world and pixel size.
-func Img(w World, pix int) *image.Paletted {
+func newImage(w World, c Config) *image.Paletted {
+	pix := c.PixelSize
+	if pix == 0 {
+		pix = 10
+	}
 	r := image.Rect(0, 0, len(w[0])*pix, len(w)*pix)
 	palette := []color.Color{
 		color.White,
@@ -101,8 +114,9 @@ func Img(w World, pix int) *image.Paletted {
 	return img
 }
 
-// WriteGif writes an image to disk.
-func WriteGif(img *image.Paletted, fileName string) error {
+// WriteGif writes an image to disk as a GIF.
+func WriteGif(w World, c Config, fileName string) error {
+	img := newImage(w, c)
 	out, err := os.Create(fileName)
 	if err != nil {
 		return fmt.Errorf("Could not open or create file '%v'", fileName)
@@ -116,12 +130,19 @@ func WriteGif(img *image.Paletted, fileName string) error {
 	return nil
 }
 
-// Anim returns a new animated GIF
-func Anim(w World, pix int, steps int, delay int) *gif.GIF {
+func newAnim(w World, c Config) *gif.GIF {
 	var images []*image.Paletted
 	var delays []int
+	steps := c.Steps
+	if steps == 0 {
+		steps = 20
+	}
+	delay := c.Delay
+	if delay == 0 {
+		delay = 50
+	}
 	for step := 0; step < steps; step++ {
-		img := Img(w, pix)
+		img := newImage(w, c)
 		images = append(images, img)
 		delays = append(delays, delay)
 
@@ -134,12 +155,13 @@ func Anim(w World, pix int, steps int, delay int) *gif.GIF {
 }
 
 // WriteAnimatedGif writes an animated GIF to disk.
-func WriteAnimatedGif(img *gif.GIF, fileName string) error {
+func WriteAnimatedGif(w World, c Config, fileName string) error {
+	anim := newAnim(w, c)
 	out, err := os.Create(fileName)
 	if err != nil {
 		return fmt.Errorf("Could not open or create file '%v'", fileName)
 	}
-	err = gif.EncodeAll(out, img)
+	err = gif.EncodeAll(out, anim)
 	if err != nil {
 		return fmt.Errorf("Could not encode animated GIF")
 	}
