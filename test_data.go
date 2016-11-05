@@ -149,3 +149,41 @@ var nextTestCases = []struct {
 		},
 	},
 }
+
+var read106TestCases = []struct {
+	input string
+	x, y  int
+	want  World
+}{
+	{
+		"#Life 1.05\n0 0\n0 1\n1 0\n1 2\n2 0",
+		5, 5,
+		World{
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+		},
+	},
+	{
+		"#Life 1.06\n0 0\n0 1\n1 0\n1 2\n2 0",
+		5, 5,
+		World{
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 1, 1, 1},
+			{0, 0, 1, 0, 0},
+			{0, 0, 0, 1, 0},
+		},
+	},
+}
+
+var centerOffsetTestCases = []struct {
+	wX, wY int
+	oX, oY int
+}{
+	{3, 3, 1, 1},
+	{10, 10, 4, 4},
+	{13, 7, 6, 3},
+}

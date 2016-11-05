@@ -1,10 +1,12 @@
 package conway
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNew(t *testing.T) {
 	for _, c := range newTestCases {
-		got, err := New(c.x, c.y)
+		got, err := NewWorld(c.x, c.y)
 		if err != nil && (c.x == 0 || c.y == 0) {
 			t.Skip()
 		}
@@ -50,37 +52,4 @@ func TestNext(t *testing.T) {
 			}
 		}
 	}
-}
-
-func TestImg(t *testing.T) {
-	w := World{
-		{0, 0, 0, 0, 0},
-		{0, 0, 1, 0, 0},
-		{0, 0, 1, 0, 0},
-		{0, 0, 1, 0, 0},
-		{0, 0, 0, 0, 0},
-	}
-
-	c := Config{
-		PixelSize: 25,
-	}
-	WriteGif(w, c, "mytestgif.gif")
-
-	w = Next(w)
-	WriteGif(w, c, "nexted.gif")
-}
-
-func TestAnim(t *testing.T) {
-	w := World{
-		{0, 1, 0, 0, 0},
-		{0, 0, 1, 0, 0},
-		{1, 1, 1, 0, 0},
-		{0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0},
-	}
-
-	c := Config{
-		Delay: 20,
-	}
-	WriteAnimatedGif(w, c, "animated.gif")
 }
