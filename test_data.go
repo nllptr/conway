@@ -150,7 +150,7 @@ var nextTestCases = []struct {
 	},
 }
 
-var read106TestCases = []struct {
+var readLife106TestCases = []struct {
 	input string
 	x, y  int
 	want  World

@@ -3,16 +3,16 @@ package conway
 import "testing"
 import "strings"
 
-func TestRead106(t *testing.T) {
-	for i, c := range read106TestCases {
+func TestReadLife106(t *testing.T) {
+	for i, c := range readLife106TestCases {
 		w, err := NewWorld(c.x, c.y)
 		if err != nil {
 			t.Fatalf("Case %d: Failed while creating world.", i+1)
 		}
 		reader := strings.NewReader(c.input)
-		err = Read106(reader, &w)
+		err = ReadLife106(reader, &w)
 		if err != nil {
-			t.Logf("Case %d: Read106 returned an error:\n%v", i, err)
+			t.Logf("Case %d: ReadLife106 returned an error:\n%v", i, err)
 		}
 		for y, row := range w {
 			for x, col := range row {

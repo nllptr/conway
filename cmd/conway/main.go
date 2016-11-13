@@ -31,7 +31,11 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	conway.Read106(*ip, &w)
+	r, err := os.Open(*ip)
+	if err != nil {
+		fmt.Printf("Could not open file '%s'\n", *ip)
+	}
+	conway.ReadLife106(r, &w)
 
 	config := conway.Config{
 		PixelSize: *cp,

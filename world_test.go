@@ -53,3 +53,20 @@ func TestNext(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkNew(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NewWorld(1000, 1000)
+	}
+}
+
+func BenchmarkNext(b *testing.B) {
+	w, err := NewWorld(1000, 1000)
+	b.ResetTimer()
+	if err != nil {
+		b.Fatalf("BenchmarkNext failed while creating new world.")
+	}
+	for i := 0; i < b.N; i++ {
+		w = Next(w)
+	}
+}

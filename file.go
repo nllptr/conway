@@ -3,19 +3,15 @@ package conway
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 	"strings"
 )
 
-// Read106 expects data to be formatted according to the
+// ReadLife106 expects data to be formatted according to the
 // Life 1.06 specification
-func Read106(filePath string, w *World) error {
-	r, err := os.Open(filePath)
-	if err != nil {
-		return fmt.Errorf("Could not open file '%s'", filePath)
-	}
-	scanner := bufio.NewScanner(r)
+func ReadLife106(reader io.Reader, w *World) error {
+	scanner := bufio.NewScanner(reader)
 	if scanner.Scan(); scanner.Text() != "#Life 1.06" {
 		return fmt.Errorf("Line 1: Wrong version string (was '%s', expected '#Life 1.06').", scanner.Text())
 	}
@@ -42,8 +38,8 @@ func Read106(filePath string, w *World) error {
 	return nil
 }
 
-/* this function is needed to make read coordinates (0,0)
-appear in the middle of the world instead of at the upper left corner */
+// centerOffset is needed to make read coordinates (0,0)
+// appear in the middle of the world instead of at the upper left corner
 func centerOffset(w *World) (x, y int) {
 	return (len((*w)[0]) - 1) / 2, (len((*w)) - 1) / 2
 }
