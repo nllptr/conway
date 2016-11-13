@@ -28,7 +28,7 @@ func TestNew(t *testing.T) {
 
 func TestNeighbors(t *testing.T) {
 	for i, c := range neighborsTestCases {
-		got := neighbors(c.w, c.x, c.y)
+		got := neighbors(&c.w, c.x, c.y)
 		if got != c.want {
 			t.Fatalf("Case %d: Number of neighbors is incorrect. Got %d, wanted %d", i+1, got, c.want)
 		}
@@ -37,7 +37,8 @@ func TestNeighbors(t *testing.T) {
 
 func TestNext(t *testing.T) {
 	for i, c := range nextTestCases {
-		got := Next(c.world)
+		got, _ := NewWorld(len(c.world[0]), len(c.world))
+		Next(&c.world, &got)
 		if len(got) != len(c.want) {
 			t.Fatalf("Case %d: Number of rows do not match. Got %d, want %d", i+1, len(got), len(c.want))
 		}
@@ -61,12 +62,10 @@ func BenchmarkNew(b *testing.B) {
 }
 
 func BenchmarkNext(b *testing.B) {
-	w, err := NewWorld(1000, 1000)
+	o, _ := NewWorld(1000, 1000)
+	n, _ := NewWorld(1000, 1000)
 	b.ResetTimer()
-	if err != nil {
-		b.Fatalf("BenchmarkNext failed while creating new world.")
-	}
 	for i := 0; i < b.N; i++ {
-		w = Next(w)
+		Next(&o, &n)
 	}
 }

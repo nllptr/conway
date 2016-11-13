@@ -70,12 +70,18 @@ func newAnim(w World, c Config) *gif.GIF {
 	if delay == 0 {
 		delay = 50
 	}
+	var o, n *World
+	o = new(World)
+	o = &w
+	nv, _ := NewWorld(len(w[0]), len(w))
+	n = &nv
 	for step := 0; step < steps; step++ {
-		img := newImage(w, c)
+		img := newImage(*o, c)
 		images = append(images, img)
 		delays = append(delays, delay)
 
-		w = Next(w)
+		Next(o, n)
+		o, n = n, o
 	}
 	return &gif.GIF{
 		Image: images,

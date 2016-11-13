@@ -1,9 +1,6 @@
 package conway
 
-import (
-	"fmt"
-	"log"
-)
+import "fmt"
 
 // World represents a Game of Life game grid.
 type World [][]uint8
@@ -20,13 +17,13 @@ func NewWorld(x, y int) (World, error) {
 	return world, nil
 }
 
-func neighbors(w World, x, y int) int {
+func neighbors(w *World, x, y int) int {
 	loRow := y - 1
 	if y == 0 {
 		loRow = 0
 	}
 	hiRow := y + 1
-	if y == len(w)-1 {
+	if y == len(*w)-1 {
 		hiRow = y
 	}
 	loCol := x - 1
@@ -34,13 +31,13 @@ func neighbors(w World, x, y int) int {
 		loCol = x
 	}
 	hiCol := x + 1
-	if x == len(w[0])-1 {
+	if x == len((*w)[0])-1 {
 		hiCol = x
 	}
 	n := 0
 	for i := loRow; i <= hiRow; i++ {
 		for j := loCol; j <= hiCol; j++ {
-			if !(i == y && j == x) && w[i][j] > 0 {
+			if !(i == y && j == x) && (*w)[i][j] > 0 {
 				n++
 			}
 		}
@@ -49,28 +46,30 @@ func neighbors(w World, x, y int) int {
 }
 
 // Next returns the next generation of a world.
-func Next(w World) World {
-	next, err := NewWorld(len(w[0]), len(w))
-	if err != nil {
-		log.Fatalf("Could not create new world with parameters (%d, %d)", len(w), len(w[0]))
-	}
-	for y, row := range w {
+func Next(old *World, new *World) {
+	/*
+		next, err := NewWorld(len(w[0]), len(w))
+		if err != nil {
+			log.Fatalf("Could not create new world with parameters (%d, %d)", len(w), len(w[0]))
+		}
+	*/
+	for y, row := range *old {
 		for x, col := range row {
-			n := neighbors(w, x, y)
+			n := neighbors(old, x, y)
 			if col == 0 && n == 3 {
-				next[y][x] = 1
+				(*new)[y][x] = 1
 			} else {
 				switch {
 				case n < 2:
-					next[y][x] = 0
+					(*new)[y][x] = 0
 				case n == 2 || n == 3:
-					next[y][x] = col
+					(*new)[y][x] = col
 				case n > 3:
-					next[y][x] = 0
+					(*new)[y][x] = 0
 				}
 			}
 
 		}
 	}
-	return next
+	//return next
 }

@@ -16,7 +16,8 @@ func TestImg(t *testing.T) {
 	}
 	WriteGif(w, c, "mytestgif.gif")
 
-	w = Next(w)
+	n, _ := NewWorld(len(w[0]), len(w))
+	Next(&w, &n)
 	WriteGif(w, c, "nexted.gif")
 }
 
