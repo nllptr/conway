@@ -30,8 +30,8 @@ func ReadLife106(reader io.Reader, w *World) error {
 		if err != nil {
 			return fmt.Errorf("Line %d: Could not read Y.", i)
 		}
-		if (x+oX) >= 0 && (x+oY) < len((*w)[0]) && (y+oY) >= 0 && (y+oY) < len((*w)) {
-			(*w)[y+oY][x+oX] = 1
+		if (x+oX) >= 0 && (x+oY) < len(w.g[0]) && (y+oY) >= 0 && (y+oY) < len((w.g)) {
+			w.g[y+oY][x+oX] = 1
 		}
 		i++
 	}
@@ -41,5 +41,5 @@ func ReadLife106(reader io.Reader, w *World) error {
 // centerOffset is needed to make read coordinates (0,0)
 // appear in the middle of the world instead of at the upper left corner
 func centerOffset(w *World) (x, y int) {
-	return (len((*w)[0]) - 1) / 2, (len((*w)) - 1) / 2
+	return (len(w.g[0]) - 1) / 2, (len((w.g)) - 1) / 2
 }

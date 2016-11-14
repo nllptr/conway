@@ -24,7 +24,7 @@ func newImage(w World, c Config) *image.Paletted {
 	if pix == 0 {
 		pix = 10
 	}
-	r := image.Rect(0, 0, len(w[0])*pix, len(w)*pix)
+	r := image.Rect(0, 0, len(w.g[0])*pix, len(w.g)*pix)
 	palette := []color.Color{
 		color.White,
 		color.Black,
@@ -32,7 +32,7 @@ func newImage(w World, c Config) *image.Paletted {
 	img := image.NewPaletted(r, palette)
 
 	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
-	for y, row := range w {
+	for y, row := range w.g {
 		for x, col := range row {
 			if col > 0 {
 				pixel := image.Rect(x*pix, y*pix, x*pix+pix, y*pix+pix)

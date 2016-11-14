@@ -27,7 +27,7 @@ func main() {
 		return
 	}
 
-	w, err := conway.NewWorld(*xp, *yp)
+	w, err := conway.NewWorld(*xp, *yp, nil, nil)
 	if err != nil {
 		fmt.Println(err)
 	}

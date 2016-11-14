@@ -5,7 +5,7 @@ import "strings"
 
 func TestReadLife106(t *testing.T) {
 	for i, c := range readLife106TestCases {
-		w, err := NewWorld(c.x, c.y)
+		w, err := NewWorld(c.x, c.y, nil, nil)
 		if err != nil {
 			t.Fatalf("Case %d: Failed while creating world.", i+1)
 		}
@@ -14,9 +14,9 @@ func TestReadLife106(t *testing.T) {
 		if err != nil {
 			t.Logf("Case %d: ReadLife106 returned an error:\n%v", i, err)
 		}
-		for y, row := range w {
+		for y, row := range w.g {
 			for x, col := range row {
-				if col != c.want[y][x] {
+				if col != c.want.g[y][x] {
 					t.Fatalf("Case %d: Failed!\nGot:\n%v\n\nWanted:\n%v", i, w, c.want)
 				}
 			}
@@ -26,7 +26,7 @@ func TestReadLife106(t *testing.T) {
 
 func TestCenterOffset(t *testing.T) {
 	for i, c := range centerOffsetTestCases {
-		w, err := NewWorld(c.wX, c.wY)
+		w, err := NewWorld(c.wX, c.wY, nil, nil)
 		if err != nil {
 			t.Fatalf("Case %d: Failed while creating world.", i+1)
 		}
