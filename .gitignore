@@ -24,3 +24,6 @@ _testmain.go
 *.prof
 
 *.gif
+
+# Compiled command executables
+cmd/conway/conway
