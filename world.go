@@ -82,19 +82,19 @@ func Next(w World) World {
 	for y, row := range w.g {
 		for x, col := range row {
 			n := neighbors(w, x, y)
-			if col == 0 && n == 3 {
-				next.g[y][x] = 1
+			if col == 0 {
+				for _, b := range w.b {
+					if b == n {
+						next.g[y][x] = 1
+					}
+				}
 			} else {
-				switch {
-				case n < 2:
-					next.g[y][x] = 0
-				case n == 2 || n == 3:
-					next.g[y][x] = col
-				case n > 3:
-					next.g[y][x] = 0
+				for _, s := range w.s {
+					if s == n {
+						next.g[y][x] = 1
+					}
 				}
 			}
-
 		}
 	}
 	return next
